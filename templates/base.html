@@ -3,86 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Информационно-аналитический модуль расчета стоимости{% endblock %}</title>
+    <title>{% block title %}Радостные Потолки — Калькулятор{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f4f6f9; 
-            color: #212529;
+            font-family: 'Nunito', sans-serif; 
+            background: linear-gradient(125deg, #fef08a, #fed7aa, #bfdbfe, #fbcfe8);
+            background-size: 400% 400%;
+            animation: auroraGradient 20s ease infinite;
+            background-attachment: fixed;
+            color: #1e293b;
         }
-        .navbar-gov {
-            background-color: #0d233a; /* Строгий ведомственный синий */
-            border-bottom: 3px solid #1d4ed8;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+        @keyframes auroraGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .navbar-brand-text {
+
+        .navbar-joy {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 3px solid #fbd524;
+            box-shadow: 0 4px 15px rgba(251, 213, 36, 0.1);
+        }
+        .brand-joy {
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff007f, #ffaa00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-joy {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
+            border: none;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(30, 41, 59, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-joy:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 35px rgba(255, 0, 127, 0.1);
+        }
+        .btn-joy {
+            background: linear-gradient(135deg, #ff007f 0%, #ff5e62 100%);
+            border: none;
+            color: white;
             font-weight: 700;
-            letter-spacing: 0.5px;
-            color: #ffffff !important;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.25);
+            transition: all 0.2s ease;
         }
-        .card-gov {
-            background: #ffffff;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-        .btn-gov {
-            background-color: #0f172a;
-            border: 1px solid #0f172a;
-            color: white;
-            font-weight: 600;
-            border-radius: 4px;
-            transition: all 0.15s ease-in-out;
-        }
-        .btn-gov:hover {
-            background-color: #1e293b;
+        .btn-joy:hover {
+            background: linear-gradient(135deg, #ff5e62 0%, #ff007f 100%);
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 0, 127, 0.35);
             color: white;
         }
-        .btn-gov-primary {
-            background-color: #1d4ed8;
-            border: 1px solid #1d4ed8;
-            color: white;
-            font-weight: 600;
-            border-radius: 4px;
+        .btn-joy-secondary {
+            background: linear-gradient(135deg, #06b6d4 0%, #0db8d6) !important;
+            color: white !important;
+            border: none;
+            font-weight: 700;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.25);
         }
-        .btn-gov-primary:hover {
-            background-color: #1e40af;
-            color: white;
+        .footer-joy {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-top: 3px solid #06b6d4;
+            color: #64748b;
         }
-        .footer-gov {
-            background-color: #ffffff;
-            border-top: 1px solid #e5e7eb;
-            color: #4b5563;
-            font-size: 0.85rem;
+
+        .animate-float {
+            animation: floating 4s ease-in-out infinite;
         }
-        .table-gov th {
-            background-color: #f8fafc;
-            color: #475569;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 8px); }
+            100% { transform: translate(0, 0px); }
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-gov sticky-top mb-5">
+    <nav class="navbar navbar-expand-lg navbar-light navbar-joy sticky-top mb-5">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <i class="bi bi-display text-white me-2 fs-4"></i>
-                <span class="navbar-brand-text fs-5">Программный комплекс «ПотолокДекор»</span>
+                <i class="bi bi-emoji-smile-fill text-warning me-2 fs-3 animate-float"></i>
+                <span class="brand-joy fs-3">ПотолкиРадости</span>
             </a>
             <div class="ms-auto d-flex align-items-center">
                 {% if user %}
-                    <div class="bg-white bg-opacity-10 px-3 py-1.5 rounded text-white me-3 border border-white border-opacity-25">
-                        <i class="bi bi-person-fill text-white-50 me-1"></i>
-                        <span class="small">Авторизован: <strong>{{ user }}</strong></span>
+                    <div class="bg-warning bg-opacity-20 px-3 py-2 rounded-pill me-3 border border-warning" style="background: rgba(255, 193, 7, 0.2); backdrop-filter: blur(5px);">
+                        <i class="bi bi-magic text-danger me-1"></i>
+                        <span class="small text-dark fw-bold">Мастер уюта: {{ user }}</span>
                     </div>
-                    <a href="/logout" class="btn btn-outline-light btn-sm px-3">
-                        Выход
+                    <a href="/logout" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">
+                        Выйти 👋
                     </a>
                 {% endif %}
             </div>
@@ -93,10 +117,10 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer-gov py-4 mt-5 text-center">
-        <div class="container">
-            <p class="mb-1 fw-semibold">© 2026 АСУ «ПотолокДекор». Все права защищены.</p>
-            <small class="text-muted">Информационно-вычислительный модуль ведения калькуляций. Сборка: v1.0.4-stable</small>
+    <footer class="footer-joy py-4 mt-5 text-center">
+        <div class="container fw-bold">
+            <p class="mb-1 text-dark">✨ Мы дарим людям радость, свет и чистоту в каждый дом! ✨</p>
+            <small class="text-muted">Модуль хорошего настроения | 2026</small>
         </div>
     </footer>
 
