@@ -13,7 +13,7 @@
     <style>
         body { 
             font-family: 'Nunito', sans-serif; 
-            background: linear-gradient(125deg, #fef08a, #fed7aa, #bfdbfe, #fbcfe8);
+            background: linear-gradient(125deg, #a7f3d0, #fef08a, #86efac, #6ee7b7);
             background-size: 400% 400%;
             animation: auroraGradient 20s ease infinite;
             background-attachment: fixed;
@@ -30,12 +30,12 @@
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 3px solid #fbd524;
-            box-shadow: 0 4px 15px rgba(251, 213, 36, 0.1);
+            border-bottom: 3px solid #10b981;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
         }
         .brand-joy {
             font-weight: 800;
-            background: linear-gradient(45deg, #ff007f, #ffaa00);
+            background: linear-gradient(45deg, #059669, #d97706);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -49,35 +49,35 @@
         }
         .card-joy:hover {
             transform: translateY(-4px);
-            box-shadow: 0 15px 35px rgba(255, 0, 127, 0.1);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.15);
         }
         .btn-joy {
-            background: linear-gradient(135deg, #ff007f 0%, #ff5e62 100%);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border: none;
             color: white;
             font-weight: 700;
             border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.25);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.25);
             transition: all 0.2s ease;
         }
         .btn-joy:hover {
-            background: linear-gradient(135deg, #ff5e62 0%, #ff007f 100%);
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
             transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(255, 0, 127, 0.35);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
             color: white;
         }
         .btn-joy-secondary {
-            background: linear-gradient(135deg, #06b6d4 0%, #0db8d6) !important;
+            background: linear-gradient(135deg, #d97706 0%, #b45309) !important;
             color: white !important;
             border: none;
             font-weight: 700;
             border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.25);
+            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.25);
         }
         .footer-joy {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
-            border-top: 3px solid #06b6d4;
+            border-top: 3px solid #10b981;
             color: #64748b;
         }
 
@@ -96,13 +96,13 @@
     <nav class="navbar navbar-expand-lg navbar-light navbar-joy sticky-top mb-5">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <i class="bi bi-emoji-smile-fill text-warning me-2 fs-3 animate-float"></i>
+                <i class="bi bi-emoji-smile-fill text-success me-2 fs-3 animate-float"></i>
                 <span class="brand-joy fs-3">ПотолкиРадости</span>
             </a>
             <div class="ms-auto d-flex align-items-center">
                 {% if user %}
-                    <div class="bg-warning bg-opacity-20 px-3 py-2 rounded-pill me-3 border border-warning" style="background: rgba(255, 193, 7, 0.2); backdrop-filter: blur(5px);">
-                        <i class="bi bi-magic text-danger me-1"></i>
+                    <div class="bg-success bg-opacity-20 px-3 py-2 rounded-pill me-3 border border-success" style="background: rgba(25, 135, 84, 0.2); backdrop-filter: blur(5px);">
+                        <i class="bi bi-magic text-success me-1"></i>
                         <span class="small text-dark fw-bold">Мастер уюта: {{ user }}</span>
                     </div>
                     <a href="/logout" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold">
@@ -120,7 +120,7 @@
     <footer class="footer-joy py-4 mt-5 text-center">
         <div class="container fw-bold">
             <p class="mb-1 text-dark">✨ Мы дарим людям радость, свет и чистоту в каждый дом! ✨</p>
-            <small class="text-muted">Модуль хорошего настроения | 2026</small>
+            <small class="text-muted">Модуль хорошего настроения | Мелмак эдишн | 2026</small>
         </div>
     </footer>
 
