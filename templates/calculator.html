@@ -1,73 +1,95 @@
 {% extends "base.html" %}
-{% block title %}Расчёт стоимости потолка{% endblock %}
+{% block title %}Расчет натяжных систем{% endblock %}
 {% block content %}
 <div class="row">
-    <!-- Форма калькулятора -->
-    <div class="col-md-5 mb-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body p-4">
-                <h4 class="card-title mb-4 font-weight-bold">Новый расчёт</h4>
+    <!-- Форма параметров -->
+    <div class="col-lg-5 mb-4">
+        <div class="card card-dark p-4">
+            <div class="card-body">
+                <h4 class="text-white fw-bold mb-4 d-flex align-items-center">
+                    <i class="bi bi-sliders text-info me-2"></i> Параметры объекта
+                </h4>
                 <form action="/calculate" method="post">
                     <div class="mb-3">
-                        <label class="form-label text-muted">Площадь комнаты (кв. м)</label>
-                        <input type="number" step="0.1" name="area" class="form-control" placeholder="Например: 16.5" required>
+                        <label class="form-label text-secondary small">Площадь помещения (м²)</label>
+                        <div class="input-group">
+                            <input type="number" step="0.1" name="area" class="form-control form-control-dark" placeholder="0.0" required>
+                            <span class="input-group-text border-secondary text-secondary" style="background: #0f172a;">м²</span>
+                        </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-muted">Материал потолка</label>
-                        <select name="material" class="form-select">
-                            <option value="матовый">Матовый ПВХ (300 руб/м²)</option>
-                            <option value="глянцевый">Глянцевый ПВХ (350 руб/м²)</option>
-                            <option value="тканевый">Премиум тканевый (600 руб/м²)</option>
+                        <label class="form-label text-secondary small">Тип полотна / Текстура</label>
+                        <select name="material" class="form-select form-control-dark" style="background-image: none;">
+                            <option value="матовый">Классический матовый (300 ₽/м²)</option>
+                            <option value="глянцевый">Отражающий глянцевый (350 ₽/м²)</option>
+                            <option value="тканевый">Элитный тканевый (600 ₽/м²)</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted">Количество углов в комнате</label>
-                        <input type="number" name="corners" class="form-control" value="4" min="4" required>
-                        <div class="form-text">4 угла включены в стоимость, каждый доп. угол +100 руб.</div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label text-secondary small">Сложные углы (шт)</label>
+                            <input type="number" name="corners" class="form-control form-control-dark" value="4" min="0" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label text-secondary small">Точки света (шт)</label>
+                            <input type="number" name="lights" class="form-control form-control-dark" value="0" min="0" required>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted">Светильники / Люстры (шт)</label>
-                        <input type="number" name="lights" class="form-control" value="0" min="0" required>
-                        <div class="form-text">Монтаж одной точки освещения — 250 руб.</div>
+                    <div class="p-2.5 rounded-3 mb-4 text-secondary small" style="background: rgba(15, 23, 42, 0.4); border: 1px solid #334155;">
+                        <i class="bi bi-info-circle text-info me-1"></i> Монтаж базовых 4 углов бесплатный. Доп. углы: 100 ₽/шт. Освещение: 250 ₽/точка.
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 shadow-sm mt-2">Рассчитать стоимость</button>
+                    <button type="submit" class="btn btn-gradient-blue w-100 py-2.5">
+                        <i class="bi bi-calculator-fill me-2"></i> Рассчитать конфигурацию
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 
     <!-- Таблица результатов -->
-    <div class="col-md-7 mb-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body p-4">
-                <h4 class="card-title mb-4 font-weight-bold">История ваших расчётов</h4>
+    <div class="col-lg-7 mb-4">
+        <div class="card card-dark p-4">
+            <div class="card-body">
+                <h4 class="text-white fw-bold mb-4 d-flex align-items-center">
+                    <i class="bi bi-clock-history text-warning me-2"></i> Журнал калькуляций
+                </h4>
                 {% if history %}
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Параметры</th>
-                                <th>Материал</th>
-                                <th>Доп. работы</th>
-                                <th>Итоговая цена</th>
+                    <table class="table table-dark table-hover align-middle border-secondary mb-0">
+                        <thead>
+                            <tr class="text-secondary small border-secondary">
+                                <th scope="col">Площадь</th>
+                                <th scope="col">Материал</th>
+                                <th scope="col">Спецификация</th>
+                                <th scope="col" class="text-end">Стоимость</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in history %}
-                            <tr>
-                                <td><strong>{{ item.area }} м²</strong></td>
-                                <td><span class="badge bg-primary px-2 py-2">{{ item.material }}</span></td>
-                                <td>📐 Углы: {{ item.corners }}<br>💡 Свет: {{ item.lights }}</td>
-                                <td><span class="text-success font-weight-bold fs-5">{{ item.total_price }} ₽</span></td>
+                            <tr class="border-secondary" style="background: transparent;">
+                                <td class="fw-semibold text-white">{{ item.area }} м²</td>
+                                <td>
+                                    {% if item.material == 'тканевый' %}
+                                        <span class="badge bg-purple px-2.5 py-1.5" style="background: #7c3aed;">{{ item.material }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary px-2.5 py-1.5" style="background: #475569;">{{ item.material }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="small text-secondary">
+                                    📐 Углы: <span class="text-white">{{ item.corners }}</span><br>
+                                    💡 Свет: <span class="text-white">{{ item.lights }}</span>
+                                </td>
+                                <td class="text-end fw-bold text-info fs-5">{{ item.total_price }} ₽</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
                 {% else %}
-                <div class="text-center text-muted py-5">
-                    <p class="fs-5 mb-0">Вы пока не создали ни одного расчёта.</p>
-                    <small>Заполните форму слева, чтобы узнать стоимость.</small>
+                <div class="text-center py-5 text-secondary">
+                    <i class="bi bi-folder-x fs-1 text-muted d-block mb-2"></i>
+                    <p class="mb-0">История расчетов пуста.</p>
+                    <small>Введите параметры слева для генерации первой сметы.</small>
                 </div>
                 {% endif %}
             </div>
