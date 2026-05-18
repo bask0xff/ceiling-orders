@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block title %}Расчет стоимости — ПотолокДекор{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center my-4">
+    <h2 class="fw-bold text-dark m-0">Калькулятор стоимости натяжных систем</h2>
+    <a href="/login" class="btn btn-outline-secondary px-3 py-2">
+        <i class="bi bi-house-door-fill"></i> На главную (Выход)
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card shadow-sm p-4 border-0 rounded-3">
+            <form id="calcForm">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small text-muted">Площадь комнаты (кв.м)</label>
+                        <input type="number" id="area" class="form-control" value="20" min="0" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small text-muted">4. Периметр помещения (пог.м)</label>
+                        <input type="number" id="perimeter" class="form-control" value="18" min="0" required>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small text-muted">2. Дополнительные углы (свыше 4х)</label>
+                        <input type="number" id="extra_angles" class="form-control" value="0" min="0">
+                        <div class="form-text">350 руб/шт.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small text-muted">3. Точечные светильники (монтаж)</label>
+                        <input type="number" id="lights" class="form-control" value="0" min="0">
+                        <div class="form-text">500 руб/точка</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small text-muted">5. Монтаж маскировочной вставки (пог.м)</label>
+                        <input type="number" id="vstavka" class="form-control" value="0" min="0">
+                        <div class="form-text">200 руб/метр</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small text-muted">6. Скрытая ниша под карниз (БП-40), м</label>
+                        <input type="number" id="bp40" class="form-control" value="0" min="0">
+                        <div class="form-text">2500 руб/метр</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small text-muted">7. Высота базового потолка (м)</label>
+                        <input type="number" id="height" class="form-control" value="2.65" step="0.05" min="0">
+                        <div class="form-text">Если выше 2.90 м: +20% к смете</div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold small text-muted">8. Какой этаж?</label>
+                        <input type="number" id="floor" class="form-control" value="1" min="1">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center pt-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="elevator" checked>
+                            <label class="form-check-label fw-semibold small text-muted" for="elevator">Есть лифт?</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card shadow-sm p-4 border-0 rounded-3 bg-dark text-white h-100">
+            <h4 class="fw-bold mb-4 border-bottom border-secondary pb-2">Детализация сметы</h4>
+            
+            <div class="d-flex justify-content-between mb-2.5">
+                <span class="text-muted small">Полотно и работа (база 400/м²):</span>
+                <span id="res_base" class="fw-bold">0 руб</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2.5">
+                <span class="text-muted small">Дополнительные углы:</span>
+                <span id="res_angles" class="fw-bold">0 руб</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2.5">
+                <span class="text-muted small">Монтаж светильников:</span>
+                <span id="res_lights" class="fw-bold">0 руб</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2.5">
+                <span class="text-muted small">Монтаж вставки:</span>
+                <span id="res_vstavka" class="fw-bold">0 руб</span>
+            </div>
+            <div class="d-flex justify-content-between mb-3 border-bottom border-secondary pb-2">
+                <span class="text-muted small">Ниша БП-40:</span>
+                <span id="res_bp40" class="fw-bold">0 руб</span>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2.5 text-warning" id="height_badge" style="display: none !important;">
+                <span class="small">Коэффициент за высоту (>2.90м):</span>
+                <span class="fw-bold">+20%</span>
+            </div>
+
+            <div class="mt-4">
+                <h2 class="text-success fw-bold mb-1" id="total_price">0 руб</h2>
+                <p class="text-muted small mb-0" id="delivery_info">Этаж: 1, лифт есть</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function calculate() {
+    // Получение данных
+    const area = parseFloat(document.getElementById('area').value) || 0;
+    const perimeter = parseFloat(document.getElementById('perimeter').value) || 0;
+    const extraAngles = parseInt(document.getElementById('extra_angles').value) || 0;
+    const lights = parseInt(document.getElementById('lights').value) || 0;
+    const vstavka = parseFloat(document.getElementById('vstavka').value) || 0;
+    const bp40 = parseFloat(document.getElementById('bp40').value) || 0;
+    const height = parseFloat(document.getElementById('height').value) || 0;
+    const floor = document.getElementById('floor').value;
+    const hasElevator = document.getElementById('elevator').checked;
+
+    // Расчет позиций
+    const baseCost = area * 400; // Пример базовой ставки за кв.м
+    const anglesCost = extraAngles * 350;
+    const lightsCost = lights * 500;
+    const vstavkaCost = vstavka * 200;
+    const bp40Cost = bp40 * 2500;
+
+    let total = baseCost + anglesCost + lightsCost + vstavkaCost + bp40Cost;
+
+    // Наценка за высоту
+    if (height > 2.90) {
+        total = total * 1.20;
+        document.getElementById('height_badge').style.setProperty('display', 'flex', 'important');
+    } else {
+        document.getElementById('height_badge').style.setProperty('display', 'none', 'important');
+    }
+
+    // Вывод на экран
+    document.getElementById('res_base').innerText = Math.round(baseCost) + ' руб';
+    document.getElementById('res_angles').innerText = Math.round(anglesCost) + ' руб';
+    document.getElementById('res_lights').innerText = Math.round(lightsCost) + ' руб';
+    document.getElementById('res_vstavka').innerText = Math.round(vstavkaCost) + ' руб';
+    document.getElementById('res_bp40').innerText = Math.round(bp40Cost) + ' руб';
+    
+    document.getElementById('total_price').innerText = Math.round(total).toLocaleString() + ' руб';
+    document.getElementById('delivery_info').innerText = `Параметры объекта — Этаж: ${floor}, лифт: ${hasElevator ? 'есть' : 'нет'}`;
+}
+
+// Вешаем обработчики изменений на все поля
+document.querySelectorAll('#calcForm input').forEach(input => {
+    input.addEventListener('input', calculate);
+    input.addEventListener('change', calculate);
+});
+
+// Первый расчет при загрузке страницы
+calculate();
+</script>
+{% endblock %}
