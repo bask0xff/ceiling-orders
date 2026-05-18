@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Расчёт стоимости потолка{% endblock %}
+{% block content %}
+<div class="row">
+    <!-- Форма калькулятора -->
+    <div class="col-md-5 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body p-4">
+                <h4 class="card-title mb-4 font-weight-bold">Новый расчёт</h4>
+                <form action="/calculate" method="post">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Площадь комнаты (кв. м)</label>
+                        <input type="number" step="0.1" name="area" class="form-control" placeholder="Например: 16.5" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Материал потолка</label>
+                        <select name="material" class="form-select">
+                            <option value="матовый">Матовый ПВХ (300 руб/м²)</option>
+                            <option value="глянцевый">Глянцевый ПВХ (350 руб/м²)</option>
+                            <option value="тканевый">Премиум тканевый (600 руб/м²)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Количество углов в комнате</label>
+                        <input type="number" name="corners" class="form-control" value="4" min="4" required>
+                        <div class="form-text">4 угла включены в стоимость, каждый доп. угол +100 руб.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Светильники / Люстры (шт)</label>
+                        <input type="number" name="lights" class="form-control" value="0" min="0" required>
+                        <div class="form-text">Монтаж одной точки освещения — 250 руб.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 shadow-sm mt-2">Рассчитать стоимость</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица результатов -->
+    <div class="col-md-7 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body p-4">
+                <h4 class="card-title mb-4 font-weight-bold">История ваших расчётов</h4>
+                {% if history %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Параметры</th>
+                                <th>Материал</th>
+                                <th>Доп. работы</th>
+                                <th>Итоговая цена</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in history %}
+                            <tr>
+                                <td><strong>{{ item.area }} м²</strong></td>
+                                <td><span class="badge bg-primary px-2 py-2">{{ item.material }}</span></td>
+                                <td>📐 Углы: {{ item.corners }}<br>💡 Свет: {{ item.lights }}</td>
+                                <td><span class="text-success font-weight-bold fs-5">{{ item.total_price }} ₽</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center text-muted py-5">
+                    <p class="fs-5 mb-0">Вы пока не создали ни одного расчёта.</p>
+                    <small>Заполните форму слева, чтобы узнать стоимость.</small>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
