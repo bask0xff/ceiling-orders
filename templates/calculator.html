@@ -1,87 +1,85 @@
 {% extends "base.html" %}
-{% block title %}Калькулятор Счастья и Уюта{% endblock %}
+{% block title %}Модуль калькуляции технологических параметров{% endblock %}
 {% block content %}
 <div class="row">
-    <!-- Форма -->
     <div class="col-lg-5 mb-4">
-        <div class="card card-joy p-4 border border-5 border-white">
+        <div class="card card-gov p-4">
             <div class="card-body">
-                <h3 class="fw-bold text-dark mb-4 d-flex align-items-center">
-                    <i class="bi bi-palette-fill text-danger me-2"></i> Параметры уюта
-                </h3>
+                <h4 class="text-dark mb-4 fw-bold d-flex align-items-center">
+                    <i class="bi bi-gear-fill text-secondary me-2"></i> Параметры объекта
+                </h4>
                 <form action="/calculate" method="post">
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Какая площадь комнаты? (м²)</label>
+                        <label class="form-label text-muted small fw-semibold">Площадь помещения (м²)</label>
                         <div class="input-group">
-                            <input type="number" step="0.1" name="area" class="form-control border-2 p-2.5 rounded-start-3" placeholder="0.0" style="font-size: 1.1rem; font-weight: 700;" required>
-                            <span class="input-group-text bg-warning border-2 border-start-0 text-dark fw-bold px-3">м²</span>
+                            <input type="number" step="0.1" name="area" class="form-control rounded-start" placeholder="0.0" style="font-weight: 600;" required>
+                            <span class="input-group-text bg-light text-dark fw-semibold">м²</span>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-muted small">Выбираем красивую текстуру</label>
-                        <select name="material" class="form-select border-2 p-2.5 fw-semibold text-dark">
-                            <option value="матовый">☁️ Классический матовый (300 ₽/м²)</option>
-                            <option value="глянцевый">✨ Отражающий глянцевый (350 ₽/м²)</option>
-                            <option value="тканевый">👑 Элитный тканевый (600 ₽/м²)</option>
+                        <label class="form-label text-muted small fw-semibold">Тип используемого полотна (фактура)</label>
+                        <select name="material" class="form-select fw-semibold text-dark">
+                            <option value="матовый">Матовый поливинилхлорид (300 ₽/м²)</option>
+                            <option value="глянцевый">Глянцевый светоотражающий ПВХ (350 ₽/м²)</option>
+                            <option value="тканевый">Тканевый бесшовный холст (600 ₽/м²)</option>
                         </select>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6">
-                            <label class="form-label fw-bold text-muted small">Сколько углов? (шт)</label>
-                            <input type="number" name="corners" class="form-control border-2 p-2.5 fw-bold" value="4" min="0" required>
+                            <label class="form-label text-muted small fw-semibold">Сложные углы (шт)</label>
+                            <input type="number" name="corners" class="form-control fw-semibold" value="4" min="0" required>
                         </div>
                         <div class="col-6">
-                            <label class="form-label fw-bold text-muted small">Лампочки/Свет (шт)</label>
-                            <input type="number" name="lights" class="form-control border-2 p-2.5 fw-bold" value="0" min="0" required>
+                            <label class="form-label text-muted small fw-semibold">Точки освещения (шт)</label>
+                            <input type="number" name="lights" class="form-control fw-semibold" value="0" min="0" required>
                         </div>
                     </div>
-                    <div class="p-3 bg-info bg-opacity-10 text-dark small rounded-4 border border-info border-opacity-25 mb-4 fw-semibold">
-                        <i class="bi bi-heart-pulse-fill text-info me-1"></i> Подарок: первые 4 угла монтируем бесплатно! Доп. углы всего 100 ₽. Светильники: 250 ₽ за точку.
+                    <div class="p-3 bg-light text-muted small rounded border mb-4">
+                        <i class="bi bi-info-square-fill text-primary me-1"></i> Базовая конфигурация включает 4 угла (без наценки). Дополнительные конструктивные углы: 100 ₽/ед. Монтаж осветительного оборудования: 250 ₽/точка.
                     </div>
-                    <button type="submit" class="btn btn-joy w-100 py-3 fs-5">
-                        <i class="bi bi-sparkles me-2"></i> Рассчитать стоимость сметы!
+                    <button type="submit" class="btn btn-gov-primary w-100 py-2">
+                        Выполнить калькуляцию сметы
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Таблица истории -->
     <div class="col-lg-7 mb-4">
-        <div class="card card-joy p-4 border border-5 border-white">
+        <div class="card card-gov p-4">
             <div class="card-body">
-                <h3 class="fw-bold text-dark mb-4 d-flex align-items-center">
-                    <i class="bi bi-journal-check text-success me-2"></i> Журнал готовых улыбок
-                </h3>
+                <h4 class="text-dark mb-4 fw-bold d-flex align-items-center">
+                    <i class="bi bi-file-earmark-text-fill text-secondary me-2"></i> Реестр выполненных расчетов
+                </h4>
                 {% if history %}
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-striped table-bordered align-middle table-gov mb-0">
                         <thead>
-                            <tr class="text-muted small fw-bold">
-                                <th scope="col">Размер</th>
-                                <th scope="col">Фактура</th>
+                            <tr class="table-light">
+                                <th scope="col">Объем (м²)</th>
+                                <th scope="col">Материал</th>
                                 <th scope="col">Спецификация</th>
-                                <th scope="col" class="text-end">Итоговая цена</th>
+                                <th scope="col" class="text-end">Сметная стоимость</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in history %}
                             <tr>
-                                <td class="fw-bold text-dark fs-5">{{ item.area }} м²</td>
+                                <td class="fw-bold text-dark">{{ item.area }} м²</td>
                                 <td>
                                     {% if item.material == 'тканевый' %}
-                                        <span class="badge px-3 py-2 rounded-pill" style="background: #7c3aed; color: white;">👑 {{ item.material }}</span>
+                                        <span class="badge bg-secondary px-2.5 py-1.5">{{ item.material }}</span>
                                     {% elif item.material == 'глянцевый' %}
-                                        <span class="badge px-3 py-2 rounded-pill" style="background: #0284c7; color: white;">✨ {{ item.material }}</span>
+                                        <span class="badge bg-light text-dark border px-2.5 py-1.5">{{ item.material }}</span>
                                     {% else %}
-                                        <span class="badge px-3 py-2 rounded-pill" style="background: #16a34a; color: white;">☁️ {{ item.material }}</span>
+                                        <span class="badge bg-dark px-2.5 py-1.5">{{ item.material }}</span>
                                     {% endif %}
                                 </td>
-                                <td class="small fw-semibold text-secondary">
-                                    📐 Углов: {{ item.corners }} шт.<br>
-                                    💡 Ламп: {{ item.lights }} шт.
+                                <td class="small text-muted">
+                                    Углы: {{ item.corners }} ед.<br>
+                                    Освещение: {{ item.lights }} ед.
                                 </td>
-                                <td class="text-end fw-extrabold text-danger fs-4" style="font-weight: 800; color: #ff007f !important;">
+                                <td class="text-end fw-bold text-dark fs-5">
                                     {{ item.total_price }} ₽
                                 </td>
                             </tr>
@@ -91,9 +89,8 @@
                 </div>
                 {% else %}
                 <div class="text-center py-5">
-                    <div class="fs-1 text-muted mb-2">🎈</div>
-                    <p class="mb-0 fw-bold text-muted">Журнал пока пуст!</p>
-                    <small class="text-muted">Заполните форму слева, чтобы создать первый счастливый расчет!</small>
+                    <p class="mb-0 fw-semibold text-muted">Данные в реестре отсутствуют.</p>
+                    <small class="text-muted">Для формирования отчетной записи введите параметры в левой панели.</small>
                 </div>
                 {% endif %}
             </div>

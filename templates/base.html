@@ -3,136 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}CEILING_CALCULATOR_v1.08_BUILD_1988{% endblock %}</title>
+    <title>{% block title %}Информационно-аналитический модуль расчета стоимости{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     
     <style>
         body { 
-            font-family: 'Share Tech Mono', monospace; 
-            background-color: #000000; 
-            color: #00ff00;
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f6f9; 
+            color: #212529;
         }
-        
-        /* Скан-линии как на старых ЭЛТ-мониторах */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 99999;
-            opacity: 0.8;
-            pointer-events: none;
-            background-size: 100% 4px, 6px 100%;
+        .navbar-gov {
+            background-color: #0d233a; /* Строгий ведомственный синий */
+            border-bottom: 3px solid #1d4ed8;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
-
-        .navbar-terminal {
-            background-color: #000000;
-            border-bottom: 2px solid #00ff00;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        .navbar-brand-text {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: #ffffff !important;
         }
-        .brand-terminal {
-            font-weight: bold;
-            color: #00ff00 !important;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        .card-gov {
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
-        
-        /* Брутальные карточки - только черные, только жесткие углы */
-        .card-terminal {
-            background-color: #000000;
-            border: 2px solid #00ff00;
-            border-radius: 0px !important;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+        .btn-gov {
+            background-color: #0f172a;
+            border: 1px solid #0f172a;
+            color: white;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.15s ease-in-out;
         }
-        
-        /* Жесткие инпуты без скруглений */
-        .form-control-terminal {
-            background-color: #000000;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            border-radius: 0px !important;
+        .btn-gov:hover {
+            background-color: #1e293b;
+            color: white;
         }
-        .form-control-terminal:focus {
-            background-color: #051a05;
-            border-color: #00ff00;
-            color: #00ff00;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
+        .btn-gov-primary {
+            background-color: #1d4ed8;
+            border: 1px solid #1d4ed8;
+            color: white;
+            font-weight: 600;
+            border-radius: 4px;
         }
-        
-        /* Кнопки в стиле старых DOS-оболочек */
-        .btn-terminal {
-            background-color: #00ff00;
-            color: #000000;
-            font-weight: bold;
-            border: 2px solid #00ff00;
-            border-radius: 0px !important;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.1s ease;
+        .btn-gov-primary:hover {
+            background-color: #1e40af;
+            color: white;
         }
-        .btn-terminal:hover {
-            background-color: #000000;
-            color: #00ff00;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+        .footer-gov {
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            color: #4b5563;
+            font-size: 0.85rem;
         }
-        .btn-terminal-outline {
-            background-color: #000000;
-            color: #00ff00;
-            border: 1px dashed #00ff00;
-            border-radius: 0px !important;
-        }
-        .btn-terminal-outline:hover {
-            background-color: #00ff00;
-            color: #000000;
-        }
-        
-        .footer-terminal {
-            border-top: 2px dashed #00ff00;
-            background-color: #000000;
-        }
-        
-        /* Кастомные баджи для таблиц */
-        .badge-terminal {
-            border: 1px solid #00ff00;
-            background: transparent;
-            color: #00ff00;
-            border-radius: 0px;
+        .table-gov th {
+            background-color: #f8fafc;
+            color: #475569;
             text-transform: uppercase;
             font-size: 0.75rem;
-        }
-        
-        /* Мигающий курсор терминала */
-        .cursor-blink::after {
-            content: "_";
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-terminal sticky-top mb-5">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-gov sticky-top mb-5">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <i class="bi bi-terminal text-success me-2 fs-4"></i>
-                <span class="brand-terminal fs-4 class cursor-blink">ROOT@SYS_CEILING:~$ </span>
+                <i class="bi bi-display text-white me-2 fs-4"></i>
+                <span class="navbar-brand-text fs-5">Программный комплекс «ПотолокДекор»</span>
             </a>
             <div class="ms-auto d-flex align-items-center">
                 {% if user %}
-                    <div class="border border-success px-3 py-1.5 me-3 bg-dark">
-                        <span class="small text-success">OPERATOR_ID: [{{ user }}]</span>
+                    <div class="bg-white bg-opacity-10 px-3 py-1.5 rounded text-white me-3 border border-white border-opacity-25">
+                        <i class="bi bi-person-fill text-white-50 me-1"></i>
+                        <span class="small">Авторизован: <strong>{{ user }}</strong></span>
                     </div>
-                    <a href="/logout" class="btn btn-terminal-outline btn-sm px-3">
-                        [DISCONNECT]
+                    <a href="/logout" class="btn btn-outline-light btn-sm px-3">
+                        Выход
                     </a>
                 {% endif %}
             </div>
@@ -143,10 +93,10 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer-terminal py-4 mt-5 text-center">
+    <footer class="footer-gov py-4 mt-5 text-center">
         <div class="container">
-            <p class="mb-1">SYSTEM STATUS: ONLINE // SECURE_PORT: 8083 // CORE: FAST_API</p>
-            <small class="text-muted">© 1988-2026 CYBER_DYNE_SYSTEMS. ALL RIGHTS RESERVED.</small>
+            <p class="mb-1 fw-semibold">© 2026 АСУ «ПотолокДекор». Все права защищены.</p>
+            <small class="text-muted">Информационно-вычислительный модуль ведения калькуляций. Сборка: v1.0.4-stable</small>
         </div>
     </footer>
 
