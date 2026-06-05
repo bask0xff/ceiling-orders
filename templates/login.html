@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}АСУ ПотолокДекор — Презентационная панель{% endblock %}
+{% block content %}
+
+<div class="row align-items-center my-4 py-2">
+    <div class="col-lg-6 mb-5 mb-lg-0">
+        <span class="badge bg-secondary text-white px-3 py-2 rounded mb-3 fw-semibold">
+            Производственный комплекс полного цикла
+        </span>
+        <h1 class="display-5 text-dark mb-3" style="font-weight: 700; color: #0d233a !important;">
+            Технологические решения <br>В области натяжных систем
+        </h1>
+        <p class="lead text-muted mb-4" style="font-size: 1.1rem; line-height: 1.6;">
+            Автоматизация процессов проектирования, расчёта сметной стоимости и контроля расхода материалов. Соответствие экологическим стандартам ЕАС и нормам пожарной безопасности. Оптимизированный регламент развёртывания систем за 24 часа.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+            <a href="#auth-card" class="btn btn-gov-primary px-4 py-2.5">
+                Перейти к расчетам смет
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-lg-5 offset-lg-1" id="auth-card">
+        {% if error %}
+        <div class="alert alert-danger border-0 rounded shadow bg-danger text-white fw-semibold mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> Ошибка: {{ error }}
+        </div>
+        {% endif %}
+        {% if message %}
+        <div class="alert alert-success border-0 rounded shadow bg-success text-white fw-semibold mb-4" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> Уведомление: {{ message }}
+        </div>
+        {% endif %}
+
+        <div class="card card-gov p-4">
+            <div class="card-body">
+                <h4 class="text-dark text-center mb-1" style="font-weight: 700;">Вход в диспетчерский пульт</h4>
+                <p class="text-muted text-center small mb-4">Для доступа к калькулятору введите учетные данные</p>
+                
+                <ul class="nav nav-tabs nav-justified mb-4" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active fw-semibold" id="pills-login-tab" data-bs-toggle="pill" data-bs-target="#pills-login" type="button" role="tab">Авторизация</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link fw-semibold" id="pills-reg-tab" data-bs-toggle="pill" data-bs-target="#pills-reg" type="button" role="tab">Регистрация</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-login" role="tabpanel">
+                        <form action="/login" method="post">
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-semibold">Идентификатор пользователя (логин)</label>
+                                <input type="text" name="username" class="form-control rounded" placeholder="Введите логин" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-semibold">Пароль доступа</label>
+                                <input type="password" name="password" class="form-control rounded" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-gov-primary w-100 py-2.5">Авторизоваться в системе</button>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane fade" id="pills-reg" role="tabpanel">
+                        <form action="/register" method="post">
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-semibold">Создать новый логин</label>
+                                <input type="text" name="username" class="form-control rounded" placeholder="Новый логин" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-semibold">Установить пароль</label>
+                                <input type="password" name="password" class="form-control rounded" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn btn-gov w-100 py-2.5">Создать учетную запись оператора</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+
+<div class="row py-3 text-center">
+    <div class="col-md-4 mb-4">
+        <div class="card card-gov h-100 p-3" style="border-top: 4px solid #16a34a;">
+            <div class="card-body">
+                <h5 class="fw-bold text-success mb-2">Эффективность деплоя</h5>
+                <p class="text-muted small mb-0 fw-semibold">Полный цикл монтажных и пусконаладочных работ выполняется в регламентный срок до 3-х рабочих часов.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card card-gov h-100 p-3" style="border-top: 4px solid #ea580c;">
+            <div class="card-body">
+                <h5 class="fw-bold text-warning mb-2" style="color: #ea580c !important;">Экологический стандарт</h5>
+                <p class="text-muted small mb-0 fw-semibold">Используемые материалы гипоаллергенны, обладают нулевым коэффициентом токсичности и сертифицированы для ДОУ.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card card-gov h-100 p-3" style="border-top: 4px solid #1d4ed8;">
+            <div class="card-body">
+                <h5 class="fw-bold text-primary mb-2">Фиксация сметной стоимости</h5>
+                <p class="text-muted small mb-0 fw-semibold">Алгоритм ценообразования полностью прозрачен. Расчетная стоимость неизменна на всех этапах исполнения контракта.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

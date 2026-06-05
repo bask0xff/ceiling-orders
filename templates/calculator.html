@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% block title %}Параметры объекта — ПотолокДекор{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center my-3">
+    <h4 class="fw-bold text-dark m-0">Программный комплекс «ПотолокДекор»</h4>
+    <a href="/login" class="btn btn-sm btn-outline-primary px-3">
+        <i class="bi bi-house-door"></i> Домой
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card shadow-sm p-4 border-0 rounded-3 bg-white">
+            <h5 class="fw-bold text-dark mb-4">
+                <i class="bi bi-gear-fill text-secondary me-2"></i> Параметры объекта
+            </h5>
+            
+            <form id="calcForm">
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-muted">Площадь помещения (м²)</label>
+                    <div class="input-group">
+                        <input type="number" id="area" class="form-control" value="20" min="0" required>
+                        <span class="input-group-text bg-light text-muted">м²</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-muted">Периметр помещения (пог.м)</label>
+                    <div class="input-group">
+                        <input type="number" id="perimeter" class="form-control" value="18" min="0" required>
+                        <span class="input-group-text bg-light text-muted">м</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-muted">Тип используемого полотна (фактура)</label>
+                    <select id="material_type" class="form-select">
+                        <option value="400">Матовый поливинилхлорид (400 ₽/м²)</option>
+                        <option value="550">Тканевый премиум (550 ₽/м²)</option>
+                    </select>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold text-muted">Доп. углы (шт)</label>
+                        <input type="number" id="extra_angles" class="form-control" value="0" min="0">
+                        <div class="form-text xsmall">350 ₽/шт.</div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold text-muted">Светильники (шт)</label>
+                        <input type="number" id="lights" class="form-control" value="0" min="0">
+                        <div class="form-text xsmall">Монтаж 500 ₽/точка</div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold text-muted">Монтаж вставки (м)</label>
+                        <input type="number" id="vstavka" class="form-control" value="0" min="0">
+                        <div class="form-text xsmall">200 ₽/метр</div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold text-muted">Ниша БП-40 (м)</label>
+                        <input type="number" id="bp40" class="form-control" value="0" min="0">
+                        <div class="form-text xsmall">2500 ₽/метр</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold text-muted">Высота потолка базового (м)</label>
+                    <input type="number" id="height" class="form-control" value="2.65" step="0.05" min="0">
+                    <div class="form-text xsmall text-danger" id="height_warning" style="display:none;">Выше 2.90 м: +20% к общему заказу!</div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <label class="form-label small fw-semibold text-muted">Какой этаж?</label>
+                        <input type="number" id="floor" class="form-control" value="1" min="1">
+                    </div>
+                    <div class="col-6 d-flex align-items-center pt-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="elevator" checked>
+                            <label class="form-check-label small fw-semibold text-muted" for="elevator">Есть лифт</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" onclick="calculateInvoice()" class="btn btn-primary w-100 py-2 fw-semibold" style="background-color: #1d4ed8; border-color: #1d4ed8;">
+                    Выполнить калькуляцию сметы
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm p-4 border-0 rounded-3 bg-white h-100">
+            <h5 class="fw-bold text-dark mb-4">
+                <i class="bi bi-file-earmark-text-fill text-secondary me-2"></i> Текущий расчет сметной стоимости
+            </h5>
+            
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="small text-muted fw-semibold">Спецификация работ</th>
+                            <th class="small text-muted fw-semibold text-end">Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Полотно и базовая работа (по площади)</td>
+                            <td id="invoice_base" class="text-end fw-bold">0.0 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Дополнительные углы (350 ₽/шт)</td>
+                            <td id="invoice_angles" class="text-end fw-bold">0.0 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Монтаж точек освещения (500 ₽/шт)</td>
+                            <td id="invoice_lights" class="text-end fw-bold">0.0 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Монтаж маскировочной вставки (200 ₽/м)</td>
+                            <td id="invoice_vstavka" class="text-end fw-bold">0.0 ₽</td>
+                        </tr>
+                        <tr>
+                            <td>Скрытая ниша под карниз БП-40 (2500 ₽/м)</td>
+                            <td id="invoice_bp40" class="text-end fw-bold">0.0 ₽</td>
+                        </tr>
+                        <tr id="invoice_height_row" class="table-warning" style="display: none;">
+                            <td class="fw-semibold text-danger">Коэффициент за высоту (>2.90м)</td>
+                            <td class="text-end fw-bold text-danger">+20%</td>
+                        </tr>
+                        <tr class="table-dark">
+                            <td class="fw-bold">ИТОГО К ОПЛАТЕ:</td>
+                            <td id="invoice_total" class="text-end fw-bold" style="font-size: 1.2rem; color: #10b981;">0.0 ₽</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="p-3 bg-light rounded-3 mt-auto">
+                <span class="small fw-semibold text-muted d-block mb-1">Информация для логистики:</span>
+                <p id="invoice_logistic" class="small mb-0 text-dark fw-medium">Этаж: 1, наличие лифта: да</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function calculateInvoice() {
+    const area = parseFloat(document.getElementById('area').value) || 0;
+    const perimeter = parseFloat(document.getElementById('perimeter').value) || 0;
+    const materialPrice = parseFloat(document.getElementById('material_type').value) || 400;
+    const extraAngles = parseInt(document.getElementById('extra_angles').value) || 0;
+    const lights = parseInt(document.getElementById('lights').value) || 0;
+    const vstavka = parseFloat(document.getElementById('vstavka').value) || 0;
+    const bp40 = parseFloat(document.getElementById('bp40').value) || 0;
+    const height = parseFloat(document.getElementById('height').value) || 0;
+    const floor = document.getElementById('floor').value || 1;
+    const hasElevator = document.getElementById('elevator').checked;
+
+    const baseCost = area * materialPrice;
+    const anglesCost = extraAngles * 350;
+    const lightsCost = lights * 500;
+    const vstavkaCost = vstavka * 200;
+    const bp40Cost = bp40 * 2500;
+
+    let total = baseCost + anglesCost + lightsCost + vstavkaCost + bp40Cost;
+
+    if (height > 2.90) {
+        total = total * 1.20;
+        document.getElementById('invoice_height_row').style.display = 'table-row';
+        document.getElementById('height_warning').style.display = 'block';
+    } else {
+        document.getElementById('invoice_height_row').style.display = 'none';
+        document.getElementById('height_warning').style.display = 'none';
+    }
+
+    document.getElementById('invoice_base').innerText = Math.round(baseCost).toLocaleString() + ' ₽';
+    document.getElementById('invoice_angles').innerText = Math.round(anglesCost).toLocaleString() + ' ₽';
+    document.getElementById('invoice_lights').innerText = Math.round(lightsCost).toLocaleString() + ' ₽';
+    document.getElementById('invoice_vstavka').innerText = Math.round(vstavkaCost).toLocaleString() + ' ₽';
+    document.getElementById('invoice_bp40').innerText = Math.round(bp40Cost).toLocaleString() + ' ₽';
+    
+    document.getElementById('invoice_total').innerText = Math.round(total).toLocaleString() + ' ₽';
+    document.getElementById('invoice_logistic').innerText = `Доставка на объект — Этаж: ${floor}, лифт: ${hasElevator ? 'есть' : 'нет'}`;
+}
+
+document.querySelectorAll('#calcForm input, #calcForm select').forEach(element => {
+    element.addEventListener('input', calculateInvoice);
+    element.addEventListener('change', calculateInvoice);
+});
+
+calculateInvoice();
+</script>
+{% endblock %}
