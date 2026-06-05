@@ -26,5 +26,4 @@
 
 ### Клонирование репозитория
 ```bash
-git clone [https://github.com/bask0xff/ceiling-orders.git](https://github.com/bask0xff/ceiling-orders.git)
-cd ceiling-orders
+git clone https://github.com/bask0xff/ceiling-orders.git]
